@@ -1,0 +1,24 @@
+{
+  "name": "rudi-app",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jordanboardman/rudi-app.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jordanboardman/rudi-app/issues"
+  },
+  "homepage": "https://github.com/jordanboardman/rudi-app#readme",
+  "dependencies": {
+    "mongodb": "^4.11.0",
+    "nodemon": "^2.0.20"
+  }
+}
