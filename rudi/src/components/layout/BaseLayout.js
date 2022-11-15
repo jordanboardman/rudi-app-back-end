@@ -1,8 +1,13 @@
 import React from 'react'
+import Navbar from '../Navbar'
 
 const BaseLayout = () => {
   return (
-    <div>BaseLayout</div>
+    <>
+    <Navbar />
+    
+    {props.children}
+    </>
   )
 }
 

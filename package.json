@@ -18,6 +18,9 @@
   },
   "homepage": "https://github.com/jordanboardman/rudi-app#readme",
   "dependencies": {
+    "@emotion/react": "^11.10.5",
+    "@emotion/styled": "^11.10.5",
+    "@mui/material": "^5.10.13",
     "mongodb": "^4.11.0",
     "nodemon": "^2.0.20"
   }
