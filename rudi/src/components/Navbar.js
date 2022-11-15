@@ -6,8 +6,12 @@ const Navbar = () => {
   return (
     <AppBar
         position="static"
+        sx={{display: "flex"}}
     >
-        <Toolbar>
+        <Toolbar
+        sx={{display: "flex",
+            justifyContent: "space-evenly"}}
+        >
             <Typography>
                 <Link to="/">Rudi</Link>
             </Typography>

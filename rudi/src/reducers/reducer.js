@@ -1,6 +1,8 @@
 const reducer = (state, action) => {
     if (state === undefined){
-        state = {}
+        state = {
+            something: ''
+        }
     }
 
     switch(action.type){

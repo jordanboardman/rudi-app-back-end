@@ -1,7 +1,7 @@
 import React from 'react'
 import Navbar from '../Navbar'
 
-const BaseLayout = () => {
+const BaseLayout = (props) => {
   return (
     <>
     <Navbar />
