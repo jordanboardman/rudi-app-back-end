@@ -2,10 +2,10 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import App from './App';
-import {legacyCreateStore as createStore} from 'redux';
+import {createStore} from 'redux';
 import { Provider } from 'react-redux';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import reducer from './reducers';
+import reducer from './reducers/reducer.js';
 import BaseLayout from './components/layout/BaseLayout';
 
 const store = createStore(reducer);
