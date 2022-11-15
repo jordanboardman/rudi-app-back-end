@@ -11,7 +11,7 @@ frontend:
         - npm run build:$BUILD_ENV
   artifacts:
     # IMPORTANT - Please verify your build output directory
-    baseDirectory: /rudi
+    baseDirectory: build
     files:
       - '**/*'
   cache:
