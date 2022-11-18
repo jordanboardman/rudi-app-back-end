@@ -1,14 +1,8 @@
 const express = require('express');
-const Pool = require('pg').Pool
-const pool = new Pool({
-  user: 'my_user',
-  host: 'localhost',
-  database: 'rudi_users',
-  password: 'root',
-  port: 5432,
-});
+
 const bodyParser = require('body-parser');
-const rudi_users = require('./rudi_users.js');
+// const rudi_users = require('./rudi_users');
+const {rudi_users} = require('./models')
 const bcrypt = require('bcrypt');
 const saltRounds = 8;
 
@@ -29,102 +23,60 @@ app.use(session({secret: 'profession speaker sofa shine cable conglomerate efflu
 app.use(express.static("public"));
 
 
-
-const getUsers = () => {
-    return new Promise(function(resolve, reject) {
-      pool.query('SELECT * FROM rudi_users', (error, results) => {
-        if (error) {
-          reject(error)
-        }
-        resolve(results.rows);
-      })
-    }) 
-  }
-  const createUser = (body) => {
-    return new Promise(function(resolve, reject) {
-      const { username, password, role, code } = body
-      pool.query('INSERT INTO rudi_users (username, password, role, code) VALUES ($1, $2, $3, $4) RETURNING *', [username, password, role, code], (error, results) => {
-        if (error) {
-          reject(error)
-        }
-        resolve(`A new user has been added added: ${results.rows[0]}`)
-      })
-    })
-  }
-  const deleteUser = () => {
-    return new Promise(function(resolve, reject) {
-      const id = parseInt(request.params.id)
-      pool.query('DELETE FROM rudi_users WHERE username = $1', [username], (error, results) => {
-        if (error) {
-          reject(error)
-        }
-        resolve(`User deleted with username: ${username}`)
-      })
-    })
-  }
-  
-  module.exports = {
-    getUsers,
-    createUser,
-    deleteUser,
-  }
-  
-
   app.use(express.json())
   app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers');
     next();
   });
   
-  app.get('/', (req, res) => {
-    rudi_users.getUsers()
-    .then(response => {
-      res.status(200).send(response);
-    })
-    .catch(error => {
-      res.status(500).send(error);
-    })
-  })
+//   app.get('/', (req, res) => {
+//     rudi_users.getUsers()
+//     .then(response => {
+//       res.status(200).send(response);
+//     })
+//     .catch(error => {
+//       res.status(500).send(error);
+//     })
+//   }),
   
-  app.post('/rudi_users', (req, res) => {
-    rudi_users.createUser(req.body)
-    .then(response => {
-      res.status(200).send(response);
-    })
-    .catch(error => {
-      res.status(500).send(error);
-    })
-  })
+//   app.post('/rudi_users', (req, res) => {
+//     rudi_users.createUser(req.body)
+//     .then(response => {
+//       res.status(200).send(response);
+//     })
+//     .catch(error => {
+//       res.status(500).send(error);
+//     })
+//   })
   
-  app.delete('/rudi_users/:username', (req, res) => {
-    rudi_users.deleteUser(req.params.username)
-    .then(response => {
-      res.status(200).send(response);
-    })
-    .catch(error => {
-      res.status(500).send(error);
-    })
-  })
-  app.listen(port, () => {
-    console.log(`App running on port ${port}.`)
-  })
+//   app.delete('/rudi_users/:username', (req, res) => {
+//     rudi_users.deleteUser(req.params.username)
+//     .then(response => {
+//       res.status(200).send(response);
+//     })
+//     .catch(error => {
+//       res.status(500).send(error);
+//     })
+//   })
+//   app.listen(port, () => {
+//     console.log(`App running on port ${port}.`)
+//   })
 
 
 
 //Create a user when submit on signup page is clicked
 app.post('/createuser', async (req, res) => {
     req.session.error = ''
-
     //check if username is in users table
-    const userUserName = await users.findOne({
+    const userUserName = await rudi_users.findOne({
         where: {
             username : req.body.username
         }
         
     })
-    
+    console.log('username:', userUserName)
     var regex = /^[A-Za-z]+$/;
     var userregex = /^[a-z0-9_-]{3,16}$/; // Letters, Numbers, Underscore and dash, min 3, max 16
     var pwregex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[^a-zA-Z0-9])(?!.*\s).{6,20}$/
@@ -147,7 +99,7 @@ app.post('/createuser', async (req, res) => {
     }
     
     // add new user to table
-    if(userUserName == null && userEmail == null && req.session.error == '') {
+    if(userUserName == null && req.session.error == '') {
         bcrypt.genSalt(saltRounds, function(err, salt) {
             bcrypt.hash(req.body.password, salt, async function(err, hash) {
                 users.create({
@@ -162,12 +114,12 @@ app.post('/createuser', async (req, res) => {
     else if(req.session.error == '') {
         req.session.error = 'Username already exists or email already used'
     }
-    if (req.session.error == '') {
-        res.redirect('/login')
-    }
-    else {
-        res.redirect('/signup')
-    }
+    // if (req.session.error == '') {
+    //     res.redirect('/login')
+    // }
+    // else {
+    //     res.redirect('/signup')
+    // }
     
 })
 

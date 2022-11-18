@@ -2,7 +2,7 @@
   "development": {
     "username": "postgres",
     "password": null,
-    "database": "rudi",
+    "database": "rudi_users",
     "host": "127.0.0.1",
     "dialect": "postgres"
   },
