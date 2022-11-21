@@ -1,7 +1,6 @@
 const express = require('express');
 
 const bodyParser = require('body-parser');
-// const rudi_users = require('./rudi_users');
 const {rudi_users} = require('./models')
 const bcrypt = require('bcrypt');
 const saltRounds = 8;
@@ -25,7 +24,7 @@ app.use(express.static("public"));
 
   app.use(express.json())
   app.use(function (req, res, next) {
-    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3001');
+    res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
     res.setHeader('Access-Control-Allow-Methods', 'GET,POST,PUT,DELETE,OPTIONS');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Access-Control-Allow-Headers');
     next();
@@ -55,10 +54,10 @@ app.post('/createuser', async (req, res) => {
         })
     }
     if (req.session.error == '') {
-        res.send('added user')
+        res.status(200)
     }
     else {
-        res.send('did not add user')
+        res.status(404)
     }
     
 })
@@ -68,25 +67,31 @@ app.post('/createuser', async (req, res) => {
 app.post('/checkpassword', async (req, res)=> {
     const user = await rudi_users.findOne({
         where: {
-            username : req.body.username
+            username : req.body.username,
         }
     })
+    console.log(req.body.username)
+    console.log('user found:', user)
     if(user!=null) {
         bcrypt.compare(req.body.password, user.password, function(err, result) {
-
+            console.log(result)
             if(result == true) {
                 username = user.username
-                req.session.userId = user.id
-                res.send("logged in")
+                password = user.password
+                res.send('fail')
             }
-            else {
-                res.send('did not log in')
+            else{
+                console.log('failure')
+                res.send('fail')
             }
         });
     }
     else {
-        res.send('did not log in')
+        console.log('failure (x2)')
+        res.send('fail')
     }
+    res.send('wahtever')
+
 })
 
 
